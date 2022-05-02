@@ -121,7 +121,7 @@ class ThinQController(udi_interface.Node):
         initiate communication with a device, do so here.
         """
 
-        while (self.cfg_language_code is None or self.cfg_country_code is None or self.handler_config_st is None and cnt > 0):
+        while ((self.cfg_language_code is None or self.cfg_country_code is None) and cnt > 0):
             LOGGER.warning(f'Waiting for all to be loaded config_language_code={self.cfg_language_code} country_code={self.cfg_country_code} cnt={cnt}')
             time.sleep(1)
             cnt -= 1
@@ -343,66 +343,6 @@ class ThinQController(udi_interface.Node):
             ],
             True
         )
-        '''
-        self.TypedParameters.load( [
-                {
-                    'name': 'item',
-                    'title': 'Item',
-                    'desc': 'Description of Item',
-                    'isList': False,
-                    'params': [
-                        {
-                            'name': 'id',
-                            'title': 'The Item ID',
-                            'isRequired': True,
-                        },
-                        {
-                            'name': 'title',
-                            'title': 'The Item Title',
-                            'defaultValue': 'The Default Title',
-                            'isRequired': True,
-                        },
-                        {
-                            'name': 'extra',
-                            'title': 'The Item Extra Info',
-                            'isRequired': False,
-                        }
-                    ]
-                },
-                {
-                    'name': 'itemlist',
-                    'title': 'Item List',
-                    'desc': 'Description of Item List',
-                    'isList': True,
-                    'params': [
-                        {
-                            'name': 'id',
-                            'title': 'The Item ID',
-                            'isRequired': True,
-                        },
-                        {
-                            'name': 'title',
-                            'title': 'The Item Title',
-                            'defaultValue': 'The Default Title',
-                            'isRequired': True,
-                        },
-                        {
-                            'name': 'names',
-                            'title': 'The Item Names',
-                            'isRequired': False,
-                            'isList': True,
-                            'defaultValue': ['somename']
-                        },
-                        {
-                            'name': 'extra',
-                            'title': 'The Item Extra Info',
-                            'isRequired': False,
-                            'isList': True,
-                        }
-                    ]
-                },
-            ], True)
-        '''
 
     def remove_notice_test(self,command):
         LOGGER.info('remove_notice_test: notices={}'.format(self.Notices))
