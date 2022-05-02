@@ -267,7 +267,7 @@ class ThinQController(udi_interface.Node):
         example controller start method and from DISCOVER command recieved
         from ISY as an exmaple.
         """
-        self.poly.addNode(DishWasher(self.poly, self.address, 'templateaddr', 'Template Node Name'))
+        #self.poly.addNode(DishWasherDevice(self.poly, self.address, 'templateaddr', 'Template Node Name'))
 
     def delete(self):
         """
