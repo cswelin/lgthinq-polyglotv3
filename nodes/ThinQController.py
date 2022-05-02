@@ -78,7 +78,8 @@ class ThinQController(udi_interface.Node):
         self.cfg_language_code  = None 
         self.cfg_country_code   = None
         self.cfg_state_file     = None
-
+        self.auth_url           = None
+        self.thinq             = None
         self.handler_config_st  = None 
         # Create data storage classes to hold specific data that we need
         # to interact with.  
@@ -133,18 +134,22 @@ class ThinQController(udi_interface.Node):
             LOGGER.error("Timed out waiting for handlers to startup")
             self.exit()
 
+        auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
+
+
         if os.path.exists("state.json"):
             with open("state.json", "r") as f:
-                thinq = ThinQ(json.load(f))
+                self.thinq = ThinQ(json.load(f))
+        elif self.auth_url != None:
+            auth.set_token_from_url(self.auth_url)
+            self.thinq = ThinQ(auth=auth)
         else:
-            auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
-
             LOGGER.info("No state file found, starting new client session")
             LOGGER.info("Please set the following variables if the default is not correct:")
             LOGGER.info("language_code={} country_code={}\n".format(self.cfg_language_code, self.cfg_country_code))
             LOGGER.info("Log in here:\n")
             self.Notices['paste'] = 'Paste the following into your browser {}'.format(auth.oauth_login_url)
-            self.Notices['save'] = "Then save it as a custom variable `auth`"
+            self.Notices['save'] = "Then save the redirect url as a custom variable `auth_url`"
 
             # auth.set_token_from_url(callback_url)
             # thinq = ThinQ(auth=auth)
@@ -196,6 +201,10 @@ class ThinQController(udi_interface.Node):
         self.Parameters.load(params)
         LOGGER.debug('Loading parameters now')
         self.check_params()
+
+        url = params["auth_url"]
+        if url != None:
+            self.auth_url = params["auth_url"]
 
     """
     Called via the CUSTOMTYPEDPARAMS event. This event is sent When
@@ -280,6 +289,9 @@ class ThinQController(udi_interface.Node):
         example controller start method and from DISCOVER command recieved
         from ISY as an exmaple.
         """
+        devices = self.thinq.mqtt.thinq_client.get_devices()
+        for device in devices.items:
+            LOGGER.info("{}: {} (model {})".format(device.device_id, device.alias, device.model_name))
         #self.poly.addNode(DishWasherDevice(self.poly, self.address, 'templateaddr', 'Template Node Name'))
 
     def delete(self):
