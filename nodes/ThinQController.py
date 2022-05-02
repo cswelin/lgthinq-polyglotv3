@@ -71,7 +71,7 @@ class ThinQController(udi_interface.Node):
         self.poly = polyglot
         self.name = 'LG ThinQ Controller'  # override what was passed in
         self.hb = 0
-
+        
         # Config
         self.cfg_language_code  = None 
         self.cfg_country_code   = None
@@ -120,7 +120,8 @@ class ThinQController(udi_interface.Node):
         Here is where you start your integration. I.E. if you need to 
         initiate communication with a device, do so here.
         """
-
+        
+        cnt = 10
         while ((self.cfg_language_code is None or self.cfg_country_code is None) and cnt > 0):
             LOGGER.warning(f'Waiting for all to be loaded config_language_code={self.cfg_language_code} country_code={self.cfg_country_code} cnt={cnt}')
             time.sleep(1)
