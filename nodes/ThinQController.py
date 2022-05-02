@@ -139,6 +139,17 @@ class ThinQController(udi_interface.Node):
         else:
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
 
+            LOGGER.info("No state file found, starting new client session")
+            LOGGER.info("Please set the following variables if the default is not correct:")
+            LOGGER.info("language_code={} country_code={}\n".format(self.cfg_language_code, self.cfg_country_code))
+            LOGGER.info("Log in here:\n")
+            self.Notices['paste'] = 'Paste the following into your browser {}'.format(auth.oauth_login_url)
+            self.Notices['save'] = "Then save it as a custom variable `auth`"
+
+            # auth.set_token_from_url(callback_url)
+            # thinq = ThinQ(auth=auth)
+
+
         # Send the profile files to the ISY if neccessary. The profile version
         # number will be checked and compared. If it has changed since the last
         # start, the new files will be sent.
