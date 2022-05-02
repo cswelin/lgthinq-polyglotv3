@@ -9,6 +9,7 @@ import os
 import json 
 import sys
 import time
+import enum
 
 # My Template Node
 from thinq2.controller.auth import ThinQAuth
@@ -27,6 +28,13 @@ LOGGER = udi_interface.LOGGER
 LOG_HANDLER = udi_interface.LOG_HANDLER
 Custom = udi_interface.Custom
 ISY = udi_interface.ISY
+
+class ConfigurationState(Enum):
+    Start
+    Region
+    Redirect
+    Authentication
+    Ready
 
 # IF you want a different log format than the current default
 LOG_HANDLER.set_log_format('%(asctime)s %(threadName)-10s %(name)-18s %(levelname)-8s %(module)s:%(funcName)s: %(message)s')
@@ -75,12 +83,11 @@ class ThinQController(udi_interface.Node):
         self.hb = 0
         
         # Config
-        self.cfg_language_code  = None 
-        self.cfg_country_code   = None
-        self.cfg_state_file     = None
         self.auth_url           = None
-        self.thinq             = None
+        self.thinq              = None
         self.handler_config_st  = None 
+        self.config_state       = ConfigurationState.Start
+
         # Create data storage classes to hold specific data that we need
         # to interact with.  
         self.Parameters      = Custom(polyglot, 'customparams')
@@ -266,6 +273,29 @@ class ThinQController(udi_interface.Node):
             self.heartbeat()
         else:
             LOGGER.debug('shortPoll (controller)')
+
+    def shortPoll(self):
+        self.Notices.clear()
+
+        if self.config_state == ConfigurationState.Start:
+            self.Notices['region'] = "Please set region_code and country_code below"
+            LOGGER.debug("{}:shortPoll: not run, not ready...".format(self.address))
+            return False
+        if self.config_state == ConfigurationState.Region:
+            LOGGER.debug("{}:shortPoll: Skipping since discover is still running".format(self.address))
+            return
+        if self.waiting_on_tokens is False:
+            LOGGER.debug("Nothing to do...")
+            return
+        elif self.waiting_on_tokens == "OAuth":
+            LOGGER.debug("{}:shortPoll: Waiting for user to authorize...".format(self.address))
+        else:
+            # Must be waiting on our PIN Authorization
+            LOGGER.debug("{}:shortPoll: Try to get tokens...".format(self.address))
+            if self._getTokens(self.waiting_on_tokens):
+                self.Notices.clear()
+                LOGGER.info("shortPoll: Calling discover now that we have authorization...")
+                self.discover()
 
     def query(self,command=None):
         """
