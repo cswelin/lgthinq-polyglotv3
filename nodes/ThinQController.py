@@ -215,8 +215,8 @@ class ThinQController(udi_interface.Node):
         region_config = params['region_config']
 
         if region_config is not None:
-            self.cfg_language_code  = params['language_code']
-            self.cfg_country_code   = params['country_code']
+            self.cfg_language_code  = region_config['language_code']
+            self.cfg_country_code   = region_config['country_code']
 
             self.cfg_state_file = self.cfg_language_code != None and self.cfg_country_code != None
 
