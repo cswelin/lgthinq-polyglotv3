@@ -315,7 +315,7 @@ class ThinQController(udi_interface.Node):
         # It may be better to do this during __init__() 
 
         # Lets try a simpler thing here
-        '''
+        
         self.TypedParameters.load( [
                 {
                     'name': 'region_config',
@@ -399,6 +399,7 @@ class ThinQController(udi_interface.Node):
                     ]
                 },
             ], True)
+        '''
 
     def remove_notice_test(self,command):
         LOGGER.info('remove_notice_test: notices={}'.format(self.Notices))
