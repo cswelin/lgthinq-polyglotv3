@@ -131,8 +131,8 @@ class ThinQController(udi_interface.Node):
             LOGGER.error("Timed out waiting for handlers to startup")
             self.exit()
 
-        if os.path.exists(STATE_FILE):
-            with open(STATE_FILE, "r") as f:
+        if os.path.exists("state.json"):
+            with open("state.json", "r") as f:
                 thinq = ThinQ(json.load(f))
         else:
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
