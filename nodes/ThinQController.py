@@ -121,8 +121,7 @@ class ThinQController(udi_interface.Node):
         initiate communication with a device, do so here.
         """
 
-        while (self.cfg_language_code      is None or self.cfg_country_code is None
-             or self.handler_config_st      is None and cnt > 0):
+        while (self.cfg_language_code is None or self.cfg_country_code is None or self.handler_config_st is None and cnt > 0):
             LOGGER.warning(f'Waiting for all to be loaded config_language_code={self.cfg_language_code} country_code={self.cfg_country_code} cnt={cnt}')
             time.sleep(1)
             cnt -= 1
@@ -316,6 +315,7 @@ class ThinQController(udi_interface.Node):
         # It may be better to do this during __init__() 
 
         # Lets try a simpler thing here
+        '''
         self.TypedParameters.load( [
                 {
                     'name': 'region_config',
@@ -340,7 +340,6 @@ class ThinQController(udi_interface.Node):
             ],
             True
         )
-
         '''
         self.TypedParameters.load( [
                 {
@@ -400,7 +399,6 @@ class ThinQController(udi_interface.Node):
                     ]
                 },
             ], True)
-            '''
 
     def remove_notice_test(self,command):
         LOGGER.info('remove_notice_test: notices={}'.format(self.Notices))
