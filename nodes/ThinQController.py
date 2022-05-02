@@ -197,6 +197,14 @@ class ThinQController(udi_interface.Node):
         LOGGER.debug('Loading typed parameters now')
         LOGGER.debug(params)
 
+        region_config = params['region_config']
+
+        if region_config is not None:
+            LOGGER.debug('region_config parameters')
+            LOGGER.debug(params)
+            self.cfg_language_code  = region_config['language_code']
+            self.cfg_country_code   = region_config['country_code']
+
     """
     Called via the CUSTOMTYPEDDATA event. This event is sent when
     the user enters or updates Custom Typed Parameters via the dashboard.
