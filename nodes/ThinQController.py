@@ -212,10 +212,13 @@ class ThinQController(udi_interface.Node):
         LOGGER.debug('Loading typed data now')
         LOGGER.debug(params)
 
-        #self.cfg_language_code  = params['language_code']
-        #self.cfg_country_code   = params['country_code']
+        region_config = params['region_config']
 
-        #self.cfg_state_file = self.cfg_language_code != None and self.cfg_country_code != None
+        if region_config is not None:
+            self.cfg_language_code  = params['language_code']
+            self.cfg_country_code   = params['country_code']
+
+            self.cfg_state_file = self.cfg_language_code != None and self.cfg_country_code != None
 
     """
     Called via the LOGLEVEL event.
