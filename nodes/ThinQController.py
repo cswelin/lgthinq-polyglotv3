@@ -7,6 +7,7 @@ a different Python module which doesn't have the new LOG_HANDLER functionality
 import udi_interface
 import os 
 import json 
+import time
 
 # My Template Node
 from thinq2.controller.auth import ThinQAuth
