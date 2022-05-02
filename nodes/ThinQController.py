@@ -7,6 +7,7 @@ a different Python module which doesn't have the new LOG_HANDLER functionality
 import udi_interface
 import os 
 import json 
+import sys
 import time
 
 # My Template Node
@@ -125,8 +126,9 @@ class ThinQController(udi_interface.Node):
         cnt = 10
         while ((self.cfg_language_code is None or self.cfg_country_code is None) and cnt > 0):
             LOGGER.warning(f'Waiting for all to be loaded config_language_code={self.cfg_language_code} country_code={self.cfg_country_code} cnt={cnt}')
-            time.sleep(1)
+            time.sleep(10)
             cnt -= 1
+        
         if cnt == 0:
             LOGGER.error("Timed out waiting for handlers to startup")
             self.exit()
