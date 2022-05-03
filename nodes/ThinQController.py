@@ -265,9 +265,9 @@ class ThinQController(udi_interface.Node):
         self.checkAuthState()
         
     def checkAuthState(self):
-        if os.path.exists("thingq/state.json"):
+        if os.path.exists("state.json"):
             LOGGER.debug("state file exists")
-            with open("thingq/state.json", "r") as f:
+            with open("state.json", "r") as f:
                 self.thinq = ThinQ(json.load(f))
                 LOGGER.debug("loaded state file, discovering")
                 self.discover()
@@ -299,8 +299,9 @@ class ThinQController(udi_interface.Node):
             self.discover()
         elif self.config_state == ConfigurationState.Ready:
             LOGGER.debug("do nothing... READY")
+    
     def saveThinQState(self): 
-        with open("thingq/state.json", "w") as f:
+        with open("state.json", "w") as f:
             json.dump(vars(thinq), f)
 
     def query(self,command=None):
