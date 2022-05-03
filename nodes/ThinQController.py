@@ -7,7 +7,7 @@ import os
 import json 
 import sys
 import time
-import enum
+from enum import Enum
 
 # My Template Node
 from thinq2.controller.auth import ThinQAuth
