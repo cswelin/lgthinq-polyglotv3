@@ -302,7 +302,7 @@ class ThinQController(udi_interface.Node):
     
     def saveThinQState(self): 
         with open("state.json", "w") as f:
-            json.dump(vars(thinq), f)
+            json.dump(vars(self.thinq), f)
 
     def query(self,command=None):
         """
