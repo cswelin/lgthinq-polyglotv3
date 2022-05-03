@@ -29,8 +29,8 @@ ISY = udi_interface.ISY
 
 class ConfigurationState(Enum):
     Start = 1 
-    Region = 2
-    WaitingForRegion = 3
+    WaitingForRegion = 2
+    Region = 3
     Redirect = 4
     WaitingForAuthentication = 5
     Authentication = 6
