@@ -275,7 +275,7 @@ class ThinQController(udi_interface.Node):
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
             auth.set_token_from_url(self.auth_url)
             self.thinq = ThinQ(auth=auth)
-            self.config_state = ConfigurationState.Ready:
+            self.config_state = ConfigurationState.Ready
             
             self.saveThinQState()
             LOGGER.debug("Done authenticating, call discover")
