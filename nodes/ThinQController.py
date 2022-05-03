@@ -245,6 +245,7 @@ class ThinQController(udi_interface.Node):
             LOGGER.debug('longPoll (controller)')
             self.heartbeat()
         else:
+            self.shortPoll())
             LOGGER.debug('shortPoll (controller)')
 
     def shortPoll(self):
