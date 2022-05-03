@@ -119,11 +119,9 @@ class ThinQController(udi_interface.Node):
         # Tell the interface we exist.  
         self.poly.addNode(self)
 
-
-
     def start(self):
         self.Notices.clear()
-    """   
+        """   
         cnt = 10
         while ((self.cfg_language_code is None or self.cfg_country_code is None) and cnt > 0):
             LOGGER.warning(f'Waiting for all to be loaded config_language_code={self.cfg_language_code} country_code={self.cfg_country_code} cnt={cnt}')
@@ -133,11 +131,11 @@ class ThinQController(udi_interface.Node):
         if cnt == 0:
             LOGGER.error("Timed out waiting for handlers to startup")
             self.exit()
-"""
+        """
  
 
-            # auth.set_token_from_url(callback_url)
-            # thinq = ThinQ(auth=auth)
+        # auth.set_token_from_url(callback_url)
+        # thinq = ThinQ(auth=auth)
 
 
         # Send the profile files to the ISY if neccessary. The profile version
