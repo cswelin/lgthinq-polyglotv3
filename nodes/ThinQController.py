@@ -220,7 +220,6 @@ class ThinQController(udi_interface.Node):
 
         if params is not None:
             region_config = params['region_config']
-
             if region_config is not None:
                 self.cfg_language_code  = region_config['language_code']
                 self.cfg_country_code   = region_config['country_code']
@@ -251,9 +250,13 @@ class ThinQController(udi_interface.Node):
     def shortPoll(self):
         self.Notices.clear()
 
+        LOGGER.debug("starting short poll: {}".format(self.config_state))
+
         if os.path.exists("thingq/state.json"):
+            LOGGER.debug("state file exists")
             with open("thingq/state.json", "r") as f:
                 self.thinq = ThinQ(json.load(f))
+                LOGGER.debug("loaded state file, discovering")
                 self.discover()
 
         elif self.config_state == ConfigurationState.Start:
