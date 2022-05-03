@@ -256,6 +256,7 @@ class ThinQController(udi_interface.Node):
        if os.path.exists("thingq/state.json"):
             with open("thingq/state.json", "r") as f:
                 self.thinq = ThinQ(json.load(f))
+                self.discover()
 
         elif self.config_state == ConfigurationState.Start:
             self.Notices['region'] = "Please set region_code and country_code below"
