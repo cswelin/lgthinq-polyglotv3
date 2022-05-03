@@ -87,7 +87,8 @@ class ThinQController(udi_interface.Node):
         self.thinq              = None
         self.handler_config_st  = None 
         self.config_state       = ConfigurationState.Start
-
+        self.cfg_language_code  = None
+        self.cfg_country_code   = None
         # Create data storage classes to hold specific data that we need
         # to interact with.  
         self.Parameters      = Custom(polyglot, 'customparams')
@@ -265,7 +266,6 @@ class ThinQController(udi_interface.Node):
         elif self.config_state == ConfigurationState.Start:
             self.Notices['region'] = "Please set region_code and country_code below"
             LOGGER.debug("Please set the following variables if the default is not correct:")
-            LOGGER.debug("language_code={} country_code={}\n".format(self.cfg_language_code, self.cfg_country_code))
             self.config_state = ConfigurationState.WaitingForRegion
 
         elif self.config_state == ConfigurationState.WaitingForRegion:
