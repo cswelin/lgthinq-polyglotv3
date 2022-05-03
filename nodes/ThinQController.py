@@ -183,9 +183,10 @@ class ThinQController(udi_interface.Node):
         LOGGER.debug('Loading parameters now')
         self.check_params()
 
-        url = params["auth_url"]
-        if url != None:
-            self.auth_url = params["auth_url"]
+        if params != None:
+            url = params["auth_url"]
+            if url != None:
+                self.auth_url = params["auth_url"]
 
     """
     Called via the CUSTOMTYPEDPARAMS event. This event is sent When
