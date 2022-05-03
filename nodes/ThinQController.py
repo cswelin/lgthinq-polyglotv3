@@ -1,5 +1,3 @@
-
-
 """
 Get the polyinterface objects we need. 
 a different Python module which doesn't have the new LOG_HANDLER functionality
@@ -285,7 +283,7 @@ class ThinQController(udi_interface.Node):
 
     def saveThinQState(self): 
         with open("thingq/state.json", "w") as f:
-        json.dump(vars(thinq), f)
+            json.dump(vars(thinq), f)
 
     def query(self,command=None):
         """
