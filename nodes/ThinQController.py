@@ -225,7 +225,8 @@ class ThinQController(udi_interface.Node):
                 self.cfg_language_code  = region_config['language_code']
                 self.cfg_country_code   = region_config['country_code']
                 LOGGER.debug('config_state {} < {}'.format(self.config_state.value, ConfigurationState.Region.value))
-                if self.config_state.value < ConfigurationState.WaitingForRegion.value:
+                if self.config_state.value < ConfigurationState.Region.value:
+                    LOGGER.debug('set config state to region')
                     self.config_state = ConfigurationState.Region
                     self.checkAuthState()
 
@@ -275,9 +276,12 @@ class ThinQController(udi_interface.Node):
         elif self.config_state == ConfigurationState.WaitingForRegion:
             LOGGER.debug("do nothing... waiting on region configurations")
         elif self.config_state == ConfigurationState.Region:
+            self.Notices['region'] = None
+          
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
             msg ='Please <a target="_blank" href="{}}/">Signin to LG ThinQ account and save the redirect URL to auth_url custom variable</a>'.format(auth.oauth_login_url)
-            self.Notices['region'] = msg
+            self.Notices['auth_url'] = msg
+          
             LOGGER.debug("authentication url {}".format(auth.oauth_login_url))
             self.config_state = ConfigurationState.WaitingForAuthentication
         elif self.config_state == ConfigurationState.WaitingForAuthentication:
