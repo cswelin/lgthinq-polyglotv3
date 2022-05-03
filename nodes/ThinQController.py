@@ -251,7 +251,7 @@ class ThinQController(udi_interface.Node):
     def shortPoll(self):
         self.Notices.clear()
 
-       if os.path.exists("thingq/state.json"):
+        if os.path.exists("thingq/state.json"):
             with open("thingq/state.json", "r") as f:
                 self.thinq = ThinQ(json.load(f))
                 self.discover()
