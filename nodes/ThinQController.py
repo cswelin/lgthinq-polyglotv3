@@ -136,7 +136,7 @@ class ThinQController(udi_interface.Node):
         # auth.set_token_from_url(callback_url)
         # thinq = ThinQ(auth=auth)
 
-
+        self.checkAuthState()
         # Send the profile files to the ISY if neccessary. The profile version
         # number will be checked and compared. If it has changed since the last
         # start, the new files will be sent.
@@ -257,7 +257,7 @@ class ThinQController(udi_interface.Node):
 
         LOGGER.debug("starting short poll: {}".format(self.config_state))
 
-        checkAuthState()
+        self.checkAuthState()
         
     def checkAuthState(self):
         if os.path.exists("thingq/state.json"):
