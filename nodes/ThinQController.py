@@ -271,6 +271,7 @@ class ThinQController(udi_interface.Node):
                 self.config_state = ConfigurationState.Ready
                 self.thinq = ThinQ(json.load(f))
                 LOGGER.debug("loaded state file, discovering")
+                self.startThinQ()
                 self.discover()
                 
         elif self.config_state == ConfigurationState.Start:
@@ -309,6 +310,7 @@ class ThinQController(udi_interface.Node):
             
             LOGGER.debug("Done authenticating, call discover")
             
+            self.startThinQ()
             self.discover()
        
         elif self.config_state == ConfigurationState.Ready:
@@ -318,9 +320,12 @@ class ThinQController(udi_interface.Node):
         with open("state.json", "w") as f:
             json.dump(vars(self.thinq), f)
 
-    def startThinQ(self, thinQ):
-        thinq.mqtt.on_message = lambda client, userdata, msg: print(msg.payload)
-        thinq.mqtt.connect()
+    def startThinQ(self):
+        self.thinq.mqtt.on_message = self.thinqHandler
+        self.thinq.mqtt.connect()
+
+    def thinqHandler(self, client, userdata, msg):
+        print(msg.payload)
 
     def query(self,command=None):
         """
