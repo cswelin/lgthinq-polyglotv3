@@ -279,7 +279,7 @@ class ThinQController(udi_interface.Node):
             self.Notices['region'] = None
           
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
-            msg ='Please <a target="_blank" href="{}}/">Signin to LG ThinQ account and save the redirect URL to auth_url custom variable</a>'.format(auth.oauth_login_url)
+            msg ='Please <a target="_blank" href="{}/">Signin to LG ThinQ account and save the redirect URL to auth_url custom variable</a>'.format(auth.oauth_login_url)
             self.Notices['auth_url'] = msg
           
             LOGGER.debug("authentication url {}".format(auth.oauth_login_url))
