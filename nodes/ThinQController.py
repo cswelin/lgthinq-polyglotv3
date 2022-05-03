@@ -265,19 +265,22 @@ class ThinQController(udi_interface.Node):
         self.checkAuthState()
         
     def checkAuthState(self):
-        if os.path.exists("state.json"):
+        if self.config_state.value < ConfigurationState.Ready.value and os.path.exists("state.json"):
             LOGGER.debug("state file exists")
             with open("state.json", "r") as f:
+                self.config_state = ConfigurationState.Ready
                 self.thinq = ThinQ(json.load(f))
                 LOGGER.debug("loaded state file, discovering")
                 self.discover()
-
+                
         elif self.config_state == ConfigurationState.Start:
             self.Notices['region'] = "Please set region_code and country_code below"
             LOGGER.debug("Please set the following variables if the default is not correct:")
             self.config_state = ConfigurationState.WaitingForRegion
+        
         elif self.config_state == ConfigurationState.WaitingForRegion:
             LOGGER.debug("do nothing... waiting on region configurations")
+       
         elif self.config_state == ConfigurationState.Region:
             self.Notices['region'] = None
           
@@ -287,8 +290,10 @@ class ThinQController(udi_interface.Node):
           
             LOGGER.debug("authentication url {}".format(auth.oauth_login_url))
             self.config_state = ConfigurationState.WaitingForAuthentication
+        
         elif self.config_state == ConfigurationState.WaitingForAuthentication:
             LOGGER.debug("do nothing... authentication redirection")
+       
         elif self.config_state == ConfigurationState.Authentication:
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
             auth.set_token_from_url(self.auth_url)
@@ -297,6 +302,7 @@ class ThinQController(udi_interface.Node):
             self.saveThinQState()
             LOGGER.debug("Done authenticating, call discover")
             self.discover()
+       
         elif self.config_state == ConfigurationState.Ready:
             LOGGER.debug("do nothing... READY")
     
