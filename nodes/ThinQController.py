@@ -225,7 +225,7 @@ class ThinQController(udi_interface.Node):
                 self.cfg_language_code  = region_config['language_code']
                 self.cfg_country_code   = region_config['country_code']
                 LOGGER.debug('config_state {} < {}'.format(self.config_state.value, ConfigurationState.Region.value))
-                if self.config_state.value < ConfigurationState.Region.value:
+                if self.config_state.value < ConfigurationState.WaitingForRegion.value:
                     self.config_state = ConfigurationState.Region
                     self.checkAuthState()
 
