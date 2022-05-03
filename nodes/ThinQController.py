@@ -188,6 +188,9 @@ class ThinQController(udi_interface.Node):
             url = params["auth_url"]
             if url != None:
                 self.auth_url = params["auth_url"]
+                if self.config_state.value < ConfigurationState.Authentication.value:
+                    self.config_state = ConfigurationState.Authentication
+                    self.checkAuthState()
 
     """
     Called via the CUSTOMTYPEDPARAMS event. This event is sent When
