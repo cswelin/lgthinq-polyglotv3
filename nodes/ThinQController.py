@@ -226,6 +226,7 @@ class ThinQController(udi_interface.Node):
                 self.cfg_country_code   = region_config['country_code']
                 if config.state < ConfigurationState.Region:
                     self.config_state = ConfigurationState.Region
+                    self.checkAuthState()
 
     """
     Called via the LOGLEVEL event.
@@ -256,6 +257,9 @@ class ThinQController(udi_interface.Node):
 
         LOGGER.debug("starting short poll: {}".format(self.config_state))
 
+        checkAuthState()
+        
+    def checkAuthState(self):
         if os.path.exists("thingq/state.json"):
             LOGGER.debug("state file exists")
             with open("thingq/state.json", "r") as f:
@@ -267,7 +271,7 @@ class ThinQController(udi_interface.Node):
             self.Notices['region'] = "Please set region_code and country_code below"
             LOGGER.debug("Please set the following variables if the default is not correct:")
             self.config_state = ConfigurationState.WaitingForRegion
-
+            self.checkAuthState()
         elif self.config_state == ConfigurationState.WaitingForRegion:
             LOGGER.debug("do nothing... waiting on region configurations")
         elif self.config_state == ConfigurationState.Region:
@@ -281,14 +285,12 @@ class ThinQController(udi_interface.Node):
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
             auth.set_token_from_url(self.auth_url)
             self.thinq = ThinQ(auth=auth)
-            self.config_state = ConfigurationState.Ready
-            
+            self.config_state = ConfigurationState.Ready                
             self.saveThinQState()
             LOGGER.debug("Done authenticating, call discover")
             self.discover()
         elif self.config_state == ConfigurationState.Ready:
             LOGGER.debug("do nothing... READY")
-
     def saveThinQState(self): 
         with open("thingq/state.json", "w") as f:
             json.dump(vars(thinq), f)
