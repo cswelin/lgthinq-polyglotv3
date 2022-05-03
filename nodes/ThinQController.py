@@ -282,25 +282,33 @@ class ThinQController(udi_interface.Node):
             LOGGER.debug("do nothing... waiting on region configurations")
        
         elif self.config_state == ConfigurationState.Region:
-            self.Notices['region'] = None
+            self.Notices.clear()
           
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
-            msg ='Please <a target="_blank" href="{}/">Signin to LG ThinQ account and save the redirect URL to auth_url custom variable</a>'.format(auth.oauth_login_url)
+            msg ='Please <a target="_blank" href="{}/">Signin to LG ThinQ account</a> and save the redirect URL to auth_url custom variable'.format(auth.oauth_login_url)
             self.Notices['auth_url'] = msg
           
             LOGGER.debug("authentication url {}".format(auth.oauth_login_url))
             self.config_state = ConfigurationState.WaitingForAuthentication
         
         elif self.config_state == ConfigurationState.WaitingForAuthentication:
+            auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
+            msg ='Please <a target="_blank" href="{}/">Signin to LG ThinQ account</a> and save the redirect URL to auth_url custom variable'.format(auth.oauth_login_url)
+            self.Notices['auth_url'] = msg
+
             LOGGER.debug("do nothing... authentication redirection")
        
         elif self.config_state == ConfigurationState.Authentication:
+            self.config_state = ConfigurationState.Ready                
+
             auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
             auth.set_token_from_url(self.auth_url)
+            
             self.thinq = ThinQ(auth=auth)
-            self.config_state = ConfigurationState.Ready                
             self.saveThinQState()
+            
             LOGGER.debug("Done authenticating, call discover")
+            
             self.discover()
        
         elif self.config_state == ConfigurationState.Ready:
@@ -309,6 +317,10 @@ class ThinQController(udi_interface.Node):
     def saveThinQState(self): 
         with open("state.json", "w") as f:
             json.dump(vars(self.thinq), f)
+
+    def startThinQ(self, thinQ):
+        thinq.mqtt.on_message = lambda client, userdata, msg: print(msg.payload)
+        thinq.mqtt.connect()
 
     def query(self,command=None):
         """
