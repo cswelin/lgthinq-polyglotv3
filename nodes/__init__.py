@@ -1,5 +1,5 @@
 
 """ Node classes used by the Python template Node Server. """
 
-from .LaundryDevice        import LaundryDevice
-from .ThinQController      import ThinQController
+from .LaundryNode        import LaundryNode
+from .ThinQController    import ThinQController
