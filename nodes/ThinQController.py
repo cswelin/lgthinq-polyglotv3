@@ -357,15 +357,13 @@ class ThinQController(udi_interface.Node):
             node   = self.poly.getNode(address)
             if node is None:
                 if isinstance(device.snapshot, LaundryDevice):
-                    self.add_node(LaundryNode(self, address, address, device.device_id, 'LG - {}'.format(device.alias), device.snapshot))
+                    self.poly.addNode(LaundryNode(self, address, address, device.device_id, 'LG - {}'.format(device.alias), device.snapshot))
 
-            
-        
         return True
         
-
     def deviceIDToAddress(self, id):
         return 'l{}'.format(id[:13])
+
     def delete(self):
         """
         Example
