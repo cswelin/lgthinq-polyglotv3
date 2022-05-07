@@ -40,7 +40,8 @@ class LaundryNode(udi_interface.Node):
         :param address: This nodes address
         :param name: This nodes name
         """
-        super(LaundryNode, self).__init__(polyglot, primary, address, name)
+        super().__init__(polyglot, primary, address, name)
+
         self.name = name
         self.laundryDevice = laundryDevice
         self.poly = polyglot
