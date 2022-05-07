@@ -78,7 +78,7 @@ class LaundryNode(udi_interface.Node):
             LOGGER.debug('longPoll (node)')
         else:
             LOGGER.debug('shortPoll (node)')
-            if int(self.getDriver('ST')) == 1:2
+            if int(self.getDriver('ST')) == 1:
                 self.setDriver('ST',0)
             else:
                 self.setDriver('ST',1)
