@@ -1,4 +1,5 @@
 
+from thinq2.model.device.laundry import LaundryDevice
 import udi_interface
 import sys
 import time
@@ -6,7 +7,7 @@ import urllib3
 
 LOGGER = udi_interface.LOGGER
 
-class DishWasher(udi_interface.Node):
+class LaundryNode(udi_interface.Node):
     """
     This is the class that all the Nodes will be represented by. You will
     add this to Polyglot/ISY with the interface.addNode method.
@@ -28,7 +29,7 @@ class DishWasher(udi_interface.Node):
     query(): Called when ISY sends a query request to Polyglot for this
         specific node
     """
-    def __init__(self, polyglot, primary, address, name):
+    def __init__(self, polyglot, primary, address, name, laundryDevice):
         """
         Optional.
         Super runs all the parent class necessities. You do NOT have
@@ -39,9 +40,11 @@ class DishWasher(udi_interface.Node):
         :param address: This nodes address
         :param name: This nodes name
         """
-        super(DishWasher, self).__init__(polyglot, primary, address, name)
+        super(LaundryNode, self).__init__(polyglot, primary, address, name)
+        self.name = name
+        self.laundryDevice = laundryDevice
         self.poly = polyglot
-        self.lpfx = '%s:%s' % (address,name)
+        self.lpfx = '%s:%s' % (self.id, address)
 
         self.poly.subscribe(self.poly.START, self.start, address)
         self.poly.subscribe(self.poly.POLL, self.poll)
@@ -52,6 +55,8 @@ class DishWasher(udi_interface.Node):
         This method is called after Polyglot has added the node per the
         START event subscription above
         """
+
+        self.setDriver('GV0', self.laundryDevice.state["remainTimeMinute"])
         LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
         self.setDriver('ST', 1)
         LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
@@ -73,10 +78,11 @@ class DishWasher(udi_interface.Node):
             LOGGER.debug('longPoll (node)')
         else:
             LOGGER.debug('shortPoll (node)')
-            if int(self.getDriver('ST')) == 1:
+            if int(self.getDriver('ST')) == 1:2
                 self.setDriver('ST',0)
             else:
                 self.setDriver('ST',1)
+                
             LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
 
     def cmd_on(self, command):
@@ -120,13 +126,16 @@ class DishWasher(udi_interface.Node):
     of variable to display. Check the UOM's in the WSDK for a complete list.
     UOM 2 is boolean so the ISY will display 'True/False'
     """
-    drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}]
+    drivers = [
+        {'driver': 'ST', 'value': 0, 'uom': 2},
+        {'driver': 'GV0', 'value': 0, 'uom': 44}
+    ]
 
     """
     id of the node from the nodedefs.xml that is in the profile.zip. This tells
     the ISY what fields and commands this node has.
     """
-    id = 'dishwasherid'
+    id = 'laundryid'
 
     """
     This is a dictionary of commands. If ISY sends a command to the NodeServer,

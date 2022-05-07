@@ -1,7 +1,10 @@
 <editors>
     <!-- Boolean -->
     <editor id="bool">
-        <range uom="2" subset="0,1" />
+      <range uom="2" subset="0,1" />
+    </editor>
+    <editor id="I_TIME_REMAINING">
+      <range uom="44" min="0" max="5000000000" prec="2" />
     </editor>
     <editor id="I_DEBUG">
       <range uom="25" subset="9,10,20,30,40,50" nls="CDM"/>

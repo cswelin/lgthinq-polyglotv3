@@ -20,11 +20,12 @@
             </accepts>
         </cmds>
     </nodeDef>
-	<!-- dishwasherid -->
-    <nodeDef id="dishwasherid" nls="tmplnode">
+	<!-- laundryid -->
+    <nodeDef id="laundryid" nls="laundrynode">
         <editors />
         <sts>
             <st id="ST" editor="bool" />
+            <st id="GV0" editor="I_TIME_REMAINING" />
         </sts>
         <cmds>
             <sends />

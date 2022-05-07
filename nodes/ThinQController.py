@@ -14,7 +14,8 @@ from thinq2.controller.auth import ThinQAuth
 from thinq2.controller.thinq import ThinQ
 from thinq2.client.objectstore import ObjectStoreClient
 from thinq2.model.device.dishwasher import DishWasherDevice
-
+from thinq2.model.device.laundry import LaundryDevice
+from nodes import LaundryNode
 """
 Some shortcuts for udi interface components
 
@@ -351,8 +352,20 @@ class ThinQController(udi_interface.Node):
         devices = self.thinq.mqtt.thinq_client.get_devices()
         for device in devices.items:
             LOGGER.info("{}: {} (model {})".format(device.device_id, device.alias, device.model_name))
-        #self.poly.addNode(DishWasherDevice(self.poly, self.address, 'templateaddr', 'Template Node Name'))
+            
+            address = self.deviceIDToAddress(device.device_id)
+            node   = self.poly.getNode(address)
+            if node is None:
+                if isinstance(device.snapshot, LaundryDevice):
+                    self.add_node(LaundryNode(self, address, address, device.device_id, 'LG - {}'.format(device.alias), device.snapshot))
 
+            
+        
+        return True
+        
+
+    def deviceIDToAddress(self, id):
+        return 'l{}'.format(id[:13])
     def delete(self):
         """
         Example

@@ -1,6 +1,6 @@
 
 # controller
-ND-controller-NAME = Template NodeServer Controller
+ND-controller-NAME = LG ThinQ NodeServer Controller
 CMD-ctl-QUERY-NAME = Query
 CMD-ctl-DISCOVER-NAME = Re-Discover
 CMD-ctl-UPDATE_PROFILE-NAME = Update Profile
@@ -18,6 +18,7 @@ CDM-40 = Error
 CDM-50 = Critical
 
 # mynodetype
-ND-dishwasherid-NAME = Template Node
-ST-tmplnode-ST-NAME = Node Status
-CMD-tmplnode-PING-NAME = Ping
+ND-laundryid-NAME = Laundy Device
+ST-laundrynode-ST-NAME = Status
+CMD-laundrynode-PING-NAME = Ping
+ST-laundrynode-GV0-NAME = Time Remaining
