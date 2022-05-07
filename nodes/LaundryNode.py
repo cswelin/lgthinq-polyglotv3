@@ -82,7 +82,7 @@ class LaundryNode(udi_interface.Node):
                 self.setDriver('ST',0)
             else:
                 self.setDriver('ST',1)
-                
+
             LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
 
     def cmd_on(self, command):

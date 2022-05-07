@@ -1,0 +1,60 @@
+2022-05-01 22:02:11,822 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2022-05-01 22:02:12,263 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.0.43 Starting...
+2022-05-01 22:02:12,575 MainThread udi_interface.interface CRITICAL interface:__init__: Failed to parse init. Exiting...
+2022-05-01 22:02:12,575 MainThread udi_interface      WARNING  thingq-poly:<module>: Received interrupt or exit...
+2022-05-01 22:02:12,575 MainThread udi_interface      ERROR    udi_interface:write: Traceback (most recent call last):
+2022-05-01 22:02:12,575 MainThread udi_interface      ERROR    udi_interface:write: File "C:\Users\colin\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\LocalCache\local-packages\Python38\site-packages\udi_interface\interface.py", line 170, in __init__
+2022-05-01 22:02:12,575 MainThread udi_interface      ERROR    udi_interface:write: base64.b64decode(os.environ.get('PG3INIT')))
+2022-05-01 22:02:12,576 MainThread udi_interface      ERROR    udi_interface:write: File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.8_3.8.2800.0_x64__qbz5n2kfra8p0\lib\base64.py", line 80, in b64decode
+2022-05-01 22:02:12,576 MainThread udi_interface      ERROR    udi_interface:write: s = _bytes_from_decode_data(s)
+2022-05-01 22:02:12,576 MainThread udi_interface      ERROR    udi_interface:write: File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.8_3.8.2800.0_x64__qbz5n2kfra8p0\lib\base64.py", line 45, in _bytes_from_decode_data
+2022-05-01 22:02:12,576 MainThread udi_interface      ERROR    udi_interface:write: raise TypeError("argument should be a bytes-like object or ASCII "
+2022-05-01 22:02:12,576 MainThread udi_interface      ERROR    udi_interface:write: TypeError
+2022-05-01 22:02:12,576 MainThread udi_interface      ERROR    udi_interface:write: :
+2022-05-01 22:02:12,576 MainThread udi_interface      ERROR    udi_interface:write: argument should be a bytes-like object or ASCII string, not 'NoneType'
+2022-05-01 22:02:12,576 MainThread udi_interface      ERROR    udi_interface:write: During handling of the above exception, another exception occurred:
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: Traceback (most recent call last):
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: File "thingq-poly.py", line 43, in <module>
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: polyglot = udi_interface.Interface([ThinQController])
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: File "C:\Users\colin\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\LocalCache\local-packages\Python38\site-packages\udi_interface\interface.py", line 173, in __init__
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: sys.exit(1)
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: SystemExit
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: :
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: 1
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: During handling of the above exception, another exception occurred:
+2022-05-01 22:02:12,577 MainThread udi_interface      ERROR    udi_interface:write: Traceback (most recent call last):
+2022-05-01 22:02:12,578 MainThread udi_interface      ERROR    udi_interface:write: File "thingq-poly.py", line 72, in <module>
+2022-05-01 22:02:12,578 MainThread udi_interface      ERROR    udi_interface:write: polyglot.stop()
+2022-05-01 22:02:12,578 MainThread udi_interface      ERROR    udi_interface:write: NameError
+2022-05-01 22:02:12,578 MainThread udi_interface      ERROR    udi_interface:write: :
+2022-05-01 22:02:12,578 MainThread udi_interface      ERROR    udi_interface:write: name 'polyglot' is not defined
+2022-05-01 22:05:11,085 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2022-05-01 22:05:11,549 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.0.43 Starting...
+2022-05-01 22:05:11,829 MainThread udi_interface.interface CRITICAL interface:__init__: Failed to parse init. Exiting...
+2022-05-01 22:05:11,829 MainThread udi_interface      WARNING  thingq-poly:<module>: Received interrupt or exit...
+2022-05-01 22:05:11,829 MainThread udi_interface      ERROR    udi_interface:write: Traceback (most recent call last):
+2022-05-01 22:05:11,830 MainThread udi_interface      ERROR    udi_interface:write: File "C:\Users\colin\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\LocalCache\local-packages\Python38\site-packages\udi_interface\interface.py", line 170, in __init__
+2022-05-01 22:05:11,830 MainThread udi_interface      ERROR    udi_interface:write: base64.b64decode(os.environ.get('PG3INIT')))
+2022-05-01 22:05:11,830 MainThread udi_interface      ERROR    udi_interface:write: File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.8_3.8.2800.0_x64__qbz5n2kfra8p0\lib\base64.py", line 80, in b64decode
+2022-05-01 22:05:11,830 MainThread udi_interface      ERROR    udi_interface:write: s = _bytes_from_decode_data(s)
+2022-05-01 22:05:11,830 MainThread udi_interface      ERROR    udi_interface:write: File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.8_3.8.2800.0_x64__qbz5n2kfra8p0\lib\base64.py", line 45, in _bytes_from_decode_data
+2022-05-01 22:05:11,831 MainThread udi_interface      ERROR    udi_interface:write: raise TypeError("argument should be a bytes-like object or ASCII "
+2022-05-01 22:05:11,831 MainThread udi_interface      ERROR    udi_interface:write: TypeError
+2022-05-01 22:05:11,831 MainThread udi_interface      ERROR    udi_interface:write: :
+2022-05-01 22:05:11,831 MainThread udi_interface      ERROR    udi_interface:write: argument should be a bytes-like object or ASCII string, not 'NoneType'
+2022-05-01 22:05:11,831 MainThread udi_interface      ERROR    udi_interface:write: During handling of the above exception, another exception occurred:
+2022-05-01 22:05:11,831 MainThread udi_interface      ERROR    udi_interface:write: Traceback (most recent call last):
+2022-05-01 22:05:11,831 MainThread udi_interface      ERROR    udi_interface:write: File "thingq-poly.py", line 44, in <module>
+2022-05-01 22:05:11,832 MainThread udi_interface      ERROR    udi_interface:write: polyglot = udi_interface.Interface([])
+2022-05-01 22:05:11,832 MainThread udi_interface      ERROR    udi_interface:write: File "C:\Users\colin\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\LocalCache\local-packages\Python38\site-packages\udi_interface\interface.py", line 173, in __init__
+2022-05-01 22:05:11,832 MainThread udi_interface      ERROR    udi_interface:write: sys.exit(1)
+2022-05-01 22:05:11,832 MainThread udi_interface      ERROR    udi_interface:write: SystemExit
+2022-05-01 22:05:11,832 MainThread udi_interface      ERROR    udi_interface:write: :
+2022-05-01 22:05:11,832 MainThread udi_interface      ERROR    udi_interface:write: 1
+2022-05-01 22:05:11,833 MainThread udi_interface      ERROR    udi_interface:write: During handling of the above exception, another exception occurred:
+2022-05-01 22:05:11,833 MainThread udi_interface      ERROR    udi_interface:write: Traceback (most recent call last):
+2022-05-01 22:05:11,833 MainThread udi_interface      ERROR    udi_interface:write: File "thingq-poly.py", line 73, in <module>
+2022-05-01 22:05:11,833 MainThread udi_interface      ERROR    udi_interface:write: polyglot.stop()
+2022-05-01 22:05:11,833 MainThread udi_interface      ERROR    udi_interface:write: NameError
+2022-05-01 22:05:11,833 MainThread udi_interface      ERROR    udi_interface:write: :
+2022-05-01 22:05:11,833 MainThread udi_interface      ERROR    udi_interface:write: name 'polyglot' is not defined
