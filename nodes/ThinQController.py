@@ -1,5 +1,3 @@
-
-
 """
 Get the polyinterface objects we need. 
 a different Python module which doesn't have the new LOG_HANDLER functionality
@@ -9,6 +7,7 @@ import os
 import json 
 import sys
 import time
+from enum import Enum
 
 # My Template Node
 from thinq2.controller.auth import ThinQAuth
@@ -27,6 +26,15 @@ LOGGER = udi_interface.LOGGER
 LOG_HANDLER = udi_interface.LOG_HANDLER
 Custom = udi_interface.Custom
 ISY = udi_interface.ISY
+
+class ConfigurationState(Enum):
+    Start = 1 
+    WaitingForRegion = 2
+    Region = 3
+    Redirect = 4
+    WaitingForAuthentication = 5
+    Authentication = 6
+    Ready = 7
 
 # IF you want a different log format than the current default
 LOG_HANDLER.set_log_format('%(asctime)s %(threadName)-10s %(name)-18s %(levelname)-8s %(module)s:%(funcName)s: %(message)s')
@@ -75,12 +83,12 @@ class ThinQController(udi_interface.Node):
         self.hb = 0
         
         # Config
-        self.cfg_language_code  = None 
-        self.cfg_country_code   = None
-        self.cfg_state_file     = None
         self.auth_url           = None
-        self.thinq             = None
+        self.thinq              = None
         self.handler_config_st  = None 
+        self.config_state       = ConfigurationState.Start
+        self.cfg_language_code  = None
+        self.cfg_country_code   = None
         # Create data storage classes to hold specific data that we need
         # to interact with.  
         self.Parameters      = Custom(polyglot, 'customparams')
@@ -110,20 +118,9 @@ class ThinQController(udi_interface.Node):
         # Tell the interface we exist.  
         self.poly.addNode(self)
 
-
-
     def start(self):
-        """
-        The Polyglot v3 Interface will publish an event to let you know you
-        can start your integration. (see the START event subscribed to above)
-
-        This is where you do your initialization / device setup.
-        Polyglot v3 Interface startup done.
-
-        Here is where you start your integration. I.E. if you need to 
-        initiate communication with a device, do so here.
-        """
-        
+        self.Notices.clear()
+        """   
         cnt = 10
         while ((self.cfg_language_code is None or self.cfg_country_code is None) and cnt > 0):
             LOGGER.warning(f'Waiting for all to be loaded config_language_code={self.cfg_language_code} country_code={self.cfg_country_code} cnt={cnt}')
@@ -133,28 +130,13 @@ class ThinQController(udi_interface.Node):
         if cnt == 0:
             LOGGER.error("Timed out waiting for handlers to startup")
             self.exit()
+        """
+ 
 
-        auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
+        # auth.set_token_from_url(callback_url)
+        # thinq = ThinQ(auth=auth)
 
-
-        if os.path.exists("state.json"):
-            with open("state.json", "r") as f:
-                self.thinq = ThinQ(json.load(f))
-        elif self.auth_url != None:
-            auth.set_token_from_url(self.auth_url)
-            self.thinq = ThinQ(auth=auth)
-        else:
-            LOGGER.info("No state file found, starting new client session")
-            LOGGER.info("Please set the following variables if the default is not correct:")
-            LOGGER.info("language_code={} country_code={}\n".format(self.cfg_language_code, self.cfg_country_code))
-            LOGGER.info("Log in here:\n")
-            self.Notices['paste'] = 'Paste the following into your browser {}'.format(auth.oauth_login_url)
-            self.Notices['save'] = "Then save the redirect url as a custom variable `auth_url`"
-
-            # auth.set_token_from_url(callback_url)
-            # thinq = ThinQ(auth=auth)
-
-
+        self.checkAuthState()
         # Send the profile files to the ISY if neccessary. The profile version
         # number will be checked and compared. If it has changed since the last
         # start, the new files will be sent.
@@ -202,9 +184,13 @@ class ThinQController(udi_interface.Node):
         LOGGER.debug('Loading parameters now')
         self.check_params()
 
-        url = params["auth_url"]
-        if url != None:
-            self.auth_url = params["auth_url"]
+        if params != None:
+            url = params["auth_url"]
+            if url != None:
+                self.auth_url = params["auth_url"]
+                if self.config_state.value < ConfigurationState.Authentication.value:
+                    self.config_state = ConfigurationState.Authentication
+                    self.checkAuthState()
 
     """
     Called via the CUSTOMTYPEDPARAMS event. This event is sent When
@@ -236,13 +222,16 @@ class ThinQController(udi_interface.Node):
         LOGGER.debug('Loading typed data now')
         LOGGER.debug(params)
 
-        region_config = params['region_config']
-
-        if region_config is not None:
-            self.cfg_language_code  = region_config['language_code']
-            self.cfg_country_code   = region_config['country_code']
-
-            self.cfg_state_file = self.cfg_language_code != None and self.cfg_country_code != None
+        if params is not None:
+            region_config = params['region_config']
+            if region_config is not None:
+                self.cfg_language_code  = region_config['language_code']
+                self.cfg_country_code   = region_config['country_code']
+                LOGGER.debug('config_state {} < {}'.format(self.config_state.value, ConfigurationState.Region.value))
+                if self.config_state.value < ConfigurationState.Region.value:
+                    LOGGER.debug('set config state to region')
+                    self.config_state = ConfigurationState.Region
+                    self.checkAuthState()
 
     """
     Called via the LOGLEVEL event.
@@ -265,7 +254,78 @@ class ThinQController(udi_interface.Node):
             LOGGER.debug('longPoll (controller)')
             self.heartbeat()
         else:
+            self.shortPoll()
             LOGGER.debug('shortPoll (controller)')
+
+    def shortPoll(self):
+        self.Notices.clear()
+
+        LOGGER.debug("starting short poll: {}".format(self.config_state))
+
+        self.checkAuthState()
+        
+    def checkAuthState(self):
+        if self.config_state.value < ConfigurationState.Ready.value and os.path.exists("state.json"):
+            LOGGER.debug("state file exists")
+            with open("state.json", "r") as f:
+                self.config_state = ConfigurationState.Ready
+                self.thinq = ThinQ(json.load(f))
+                LOGGER.debug("loaded state file, discovering")
+                self.startThinQ()
+                self.discover()
+                
+        elif self.config_state == ConfigurationState.Start:
+            self.Notices['region'] = "Please set region_code and country_code below"
+            LOGGER.debug("Please set the following variables if the default is not correct:")
+            self.config_state = ConfigurationState.WaitingForRegion
+        
+        elif self.config_state == ConfigurationState.WaitingForRegion:
+            LOGGER.debug("do nothing... waiting on region configurations")
+       
+        elif self.config_state == ConfigurationState.Region:
+            self.Notices.clear()
+          
+            auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
+            msg ='Please <a target="_blank" href="{}/">Signin to LG ThinQ account</a> and save the redirect URL to auth_url custom variable'.format(auth.oauth_login_url)
+            self.Notices['auth_url'] = msg
+          
+            LOGGER.debug("authentication url {}".format(auth.oauth_login_url))
+            self.config_state = ConfigurationState.WaitingForAuthentication
+        
+        elif self.config_state == ConfigurationState.WaitingForAuthentication:
+            auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
+            msg ='Please <a target="_blank" href="{}/">Signin to LG ThinQ account</a> and save the redirect URL to auth_url custom variable'.format(auth.oauth_login_url)
+            self.Notices['auth_url'] = msg
+
+            LOGGER.debug("do nothing... authentication redirection")
+       
+        elif self.config_state == ConfigurationState.Authentication:
+            self.config_state = ConfigurationState.Ready                
+
+            auth = ThinQAuth(language_code=self.cfg_language_code, country_code=self.cfg_country_code)
+            auth.set_token_from_url(self.auth_url)
+            
+            self.thinq = ThinQ(auth=auth)
+            self.saveThinQState()
+            
+            LOGGER.debug("Done authenticating, call discover")
+            
+            self.startThinQ()
+            self.discover()
+       
+        elif self.config_state == ConfigurationState.Ready:
+            LOGGER.debug("do nothing... READY")
+    
+    def saveThinQState(self): 
+        with open("state.json", "w") as f:
+            json.dump(vars(self.thinq), f)
+
+    def startThinQ(self):
+        self.thinq.mqtt.on_message = self.thinqHandler
+        self.thinq.mqtt.connect()
+
+    def thinqHandler(self, client, userdata, msg):
+        print(msg.payload)
 
     def query(self,command=None):
         """
@@ -283,12 +343,11 @@ class ThinQController(udi_interface.Node):
             nodes[node].reportDrivers()
 
     def discover(self, *args, **kwargs):
-        """
-        Example
-        Do discovery here. Does not have to be called discovery. Called from
-        example controller start method and from DISCOVER command recieved
-        from ISY as an exmaple.
-        """
+        if self.config_state != ConfigurationState.Ready:
+            LOGGER.debug("Trying to discover while not authorized")
+            return False
+        
+
         devices = self.thinq.mqtt.thinq_client.get_devices()
         for device in devices.items:
             LOGGER.info("{}: {} (model {})".format(device.device_id, device.alias, device.model_name))
@@ -334,13 +393,7 @@ class ThinQController(udi_interface.Node):
         logging.getLogger('urllib3').setLevel(level)
 
     def check_params(self):
-        """
-        This is an example if using custom Params for user and password and an example with a Dictionary
-        """
         self.Notices.clear()
-        self.Notices['hello'] = 'Hey there, my IP is {}'.format(self.poly.network_interface['addr'])
-        self.Notices['hello2'] = 'Hello Friends!'
-
         # Typed Parameters allow for more complex parameter entries.
         # It may be better to do this during __init__() 
 
