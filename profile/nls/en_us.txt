@@ -29,3 +29,6 @@ ST-laundrynode-GV2-NAME = Power State
 
 POWER-0 = Powered Off
 POWER-1 = Powered On
+
+DOOR-0 = Door Opened
+DOOR-1 = Door Closed

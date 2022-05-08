@@ -36,4 +36,21 @@
             </accepts>
         </cmds>
     </nodeDef>
+    <!-- dishwasherid -->
+    <nodeDef id="dishwasherid" nls="dishwashernode">
+        <editors />
+        <sts>
+            <st id="ST" editor="bool" />
+            <st id="GV0" editor="I_TIME_REMAINING" />
+            <st id="GV1" editor="bool" />
+            <st id="GV2" editor="POWER" />
+            <st id="GV2" editor="DOOR" />
+        </sts>
+        <cmds>
+            <sends />
+            <accepts>
+                <cmd id="PING" />
+            </accepts>
+        </cmds>
+    </nodeDef>
 </nodeDefs>

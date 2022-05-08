@@ -8,7 +8,7 @@ import urllib3
 
 LOGGER = udi_interface.LOGGER
 
-class LaundryNode(udi_interface.Node):
+class DishWasherNode(udi_interface.Node):
     """
     This is the class that all the Nodes will be represented by. You will
     add this to Polyglot/ISY with the interface.addNode method.
@@ -43,7 +43,7 @@ class LaundryNode(udi_interface.Node):
         """    
 
         self.device = device
-        self.laundryDevice = device.snapshot
+        self.snapshot = device.snapshot
         self.name = name
         self.thinQ = thinQ
         self.poly = polyglot
@@ -76,6 +76,10 @@ class LaundryNode(udi_interface.Node):
         LOGGER.debug('%s: get GV2=%s',self.lpfx,self.getDriver('GV2'))
         self.setDriver('GV2', self.laundryDevice.state["state"] == "POWERON" )
         LOGGER.debug('%s: get GV2=%s',self.lpfx,self.getDriver('GV2'))
+
+        LOGGER.debug('%s: get GV3=%s',self.lpfx,self.getDriver('GV3'))
+        self.setDriver('GV3', self.laundryDevice.state["door"] != "CLOSE" )
+        LOGGER.debug('%s: get GV3=%s',self.lpfx,self.getDriver('GV3'))
         
         LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
         self.setDriver('ST', 1)
@@ -151,14 +155,15 @@ class LaundryNode(udi_interface.Node):
         {'driver': 'ST', 'value': 0, 'uom': 2},
         {'driver': 'GV0', 'value': 0, 'uom': 44}, # Time Remaining 
         {'driver': 'GV1', 'value': 0, 'uom': 2},  # Remote Start
-        {'driver': 'GV2', 'value': 0, 'uom': 2} # Power state
+        {'driver': 'GV2', 'value': 0, 'uom': 2},  # Power state
+        {'driver': 'GV3', 'value': 0, 'uom': 2}   # Door State
     ]
 
     """
     id of the node from the nodedefs.xml that is in the profile.zip. This tells
     the ISY what fields and commands this node has.
     """
-    id = 'laundryid'
+    id = 'dishwasherid'
 
     """
     This is a dictionary of commands. If ISY sends a command to the NodeServer,

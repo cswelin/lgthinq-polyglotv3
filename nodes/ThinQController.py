@@ -354,11 +354,15 @@ class ThinQController(udi_interface.Node):
             LOGGER.info("{}: {} (model {})".format(device.device_id, device.alias, device.model_name))
             
             address = self.deviceIDToAddress(device.device_id)
-            node   = self.poly.getNode(address)
+            node    = self.poly.getNode(address)
+            
             if node is None:
+                anode = None
                 if isinstance(device.snapshot, LaundryDevice):
-                    anode = self.poly.addNode(LaundryNode(self.poly, self.address, address, 'LG - {}'.format(device.alias), device, self.thinq))
-                    LOGGER.debug(f'got {anode}')
+                    anode = self.poly.addNode(LaundryNode(self.poly, self.address, address, 'LG-{}'.format(device.alias), device, self.thinq))
+                elif isinstance(device.snapshot, DishWasherNode):
+                    anode = self.poly.addNode(DishWasherNode(self.poly, self.address, address, 'LG-{}'.format(device.alias), device, self.thinq))
+                LOGGER.debug(f'got {anode}')
 
         return True
         
