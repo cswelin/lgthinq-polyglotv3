@@ -90,6 +90,8 @@ class ThinQController(udi_interface.Node):
         self.config_state       = ConfigurationState.Start
         self.cfg_language_code  = None
         self.cfg_country_code   = None
+
+        self.n_queue = []
         # Create data storage classes to hold specific data that we need
         # to interact with.  
         self.Parameters      = Custom(polyglot, 'customparams')
@@ -104,12 +106,13 @@ class ThinQController(udi_interface.Node):
         # The START event is unique in that you can subscribe to 
         # the start event for each node you define.
 
-        self.poly.subscribe(self.poly.START, self.start, address)
-        self.poly.subscribe(self.poly.LOGLEVEL, self.handleLevelChange)
-        self.poly.subscribe(self.poly.CUSTOMPARAMS, self.parameterHandler)
-        self.poly.subscribe(self.poly.CUSTOMTYPEDPARAMS, self.typedParameterHandler)
-        self.poly.subscribe(self.poly.CUSTOMTYPEDDATA, self.typedDataHandler)
-        self.poly.subscribe(self.poly.POLL, self.poll)
+        self.poly.subscribe(self.poly.START,                self.start, address)
+        self.poly.subscribe(self.poly.LOGLEVEL,             self.handleLevelChange)
+        self.poly.subscribe(self.poly.CUSTOMPARAMS,         self.parameterHandler)
+        self.poly.subscribe(self.poly.CUSTOMTYPEDPARAMS,    self.typedParameterHandler)
+        self.poly.subscribe(self.poly.CUSTOMTYPEDDATA,      self.typedDataHandler)
+        self.poly.subscribe(self.poly.POLL,                 self.poll)
+        self.poly.subscribe(self.poly.ADDNODEDONE,          self.node_queue)
 
         self.poly.subscribe(self.poly.CONFIG, self.handler_config)
         # Tell the interface we have subscribed to all the events we need.
@@ -359,13 +362,35 @@ class ThinQController(udi_interface.Node):
             if node is None:
                 anode = None
                 if isinstance(device.snapshot, LaundryDevice):
-                    anode = self.poly.addNode(LaundryNode(self.poly, self.address, address, 'LG-{}'.format(device.alias), device, self.thinq))
+                    anode = self.poly.add_node(LaundryNode(self.poly, self.address, address, 'LG-{}'.format(device.alias), device, self.thinq))
                 elif isinstance(device.snapshot, DishWasherDevice):
-                    anode = self.poly.addNode(DishWasherNode(self.poly, self.address, address, 'LG-{}'.format(device.alias), device, self.thinq))
+                    anode = self.poly.add_node(DishWasherNode(self.poly, self.address, address, 'LG-{}'.format(device.alias), device, self.thinq))
                 LOGGER.debug(f'got {anode}')
 
         return True
         
+    def add_node(self,node):
+        anode = self.poly.addNode(node)
+        LOGGER.debug(f'got {anode}')
+        self.wait_for_node_done()
+        if anode is None:
+            LOGGER.error('Failed to add node address')
+        return anode
+    
+    '''
+    node_queue() and wait_for_node_event() create a simple way to wait
+    for a node to be created.  The nodeAdd() API call is asynchronous and
+    will return before the node is fully created. Using this, we can wait
+    until it is fully created before we try to use it.
+    '''
+    def node_queue(self, data):
+        self.n_queue.append(data['address'])
+
+    def wait_for_node_done(self):
+        while len(self.n_queue) == 0:
+            time.sleep(0.1)
+        self.n_queue.pop()
+
     def deviceIDToAddress(self, id):
         return 'l{}'.format(id[:12])
 
