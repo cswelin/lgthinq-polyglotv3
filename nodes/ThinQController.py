@@ -358,16 +358,15 @@ class ThinQController(udi_interface.Node):
         for device in devices.items:
             LOGGER.info("{}: {} (model {})".format(device.device_id, device.alias, device.model_name))
             
-            address = self.deviceIDToAddress(device.device_id)
+            address = self.get_valid_node_address(device.device_id)
             node    = self.poly.getNode(address)
             
             if node is None:
-                anode = None
+                alias = self.get_valid_node_name('LG-{}'.format(device.alias))
                 if isinstance(device.snapshot, LaundryDevice):
-                    anode = self.add_node(LaundryNode(self.poly, self.address, address, 'LG-{}'.format(device.alias), device, self.thinq))
+                    self.add_node(LaundryNode(self.poly, self.address, address, alis, device, self.thinq))
                 elif isinstance(device.snapshot, DishWasherDevice):
-                    anode = self.add_node(DishWasherNode(self.poly, self.address, address, 'LG-{}'.format(device.alias), device, self.thinq))
-                LOGGER.debug(f'got {anode}')
+                    self.add_node(DishWasherNode(self.poly, self.address, address, alias, device, self.thinq))
 
         return True
         
@@ -393,9 +392,22 @@ class ThinQController(udi_interface.Node):
             time.sleep(0.1)
         self.n_queue.pop()
 
-    def deviceIDToAddress(self, id):
-        return 'l{}'.format(id[:12])
+    def get_valid_node_address(self, deviceID):
+        # Only allow utf-8 characters
+        #  https://stackoverflow.com/questions/26541968/delete-every-non-utf-8-symbols-froms-string
+        name = bytes(deviceID, 'utf-8').decode('utf-8','ignore')
+        # Remove <>`~!@#$%^&*(){}[]?/\;:"'` characters from name
+        # make it lower case, and only 14 characters
+        return re.sub(r"[<>`~!@#$%^&*(){}[\]?/\\;:\"']+", "", name.lower()[:14])
 
+    # Removes invalid charaters for ISY Node description
+    def get_valid_node_name(self, name):
+        # Only allow utf-8 characters
+        #  https://stackoverflow.com/questions/26541968/delete-every-non-utf-8-symbols-froms-string
+        name = bytes(name, 'utf-8').decode('utf-8','ignore')
+        # Remove <>`~!@#$%^&*(){}[]?/\;:"'` characters from name
+        return re.sub(r"[<>`~!@#$%^&*(){}[\]?/\\;:\"']+", "", name)
+        
     def delete(self):
         """
         Example
