@@ -159,7 +159,7 @@ class LaundryNode(udi_interface.Node):
     the ISY what fields and commands this node has.
     """
     id = 'laundryid'
-
+    hint = '0x110c1100'
     """
     This is a dictionary of commands. If ISY sends a command to the NodeServer,
     this tells it which method to call. DON calls setOn, etc.

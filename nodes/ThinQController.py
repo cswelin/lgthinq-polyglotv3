@@ -161,7 +161,7 @@ class ThinQController(udi_interface.Node):
         # Device discovery. Here you may query for your device(s) and 
         # their capabilities.  Also where you can create nodes that
         # represent the found device(s)
-        self.discover()
+        # self.discover()
 
         # Here you may want to send updated values to the ISY rather
         # than wait for a poll interval.  The user will get more 
@@ -504,6 +504,7 @@ class ThinQController(udi_interface.Node):
     The id must match the nodeDef id="controller" in the nodedefs.xml
     """
     id = 'controller'
+    hint = '0x121c1210'
     commands = {
         'QUERY': query,
         'DISCOVER': discover,

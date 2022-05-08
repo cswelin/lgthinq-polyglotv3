@@ -164,6 +164,7 @@ class DishWasherNode(udi_interface.Node):
     the ISY what fields and commands this node has.
     """
     id = 'dishwasherid'
+    hint = '0x101c1010'
 
     """
     This is a dictionary of commands. If ISY sends a command to the NodeServer,
