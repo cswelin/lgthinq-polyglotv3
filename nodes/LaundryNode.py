@@ -30,7 +30,7 @@ class LaundryNode(udi_interface.Node):
     query(): Called when ISY sends a query request to Polyglot for this
         specific node
     """
-    def __init__(self, polyglot, primary, address, name, laundryDevice, thinQ):
+    def __init__(self, polyglot, primary, address, name, device, thinQ):
         """
         Optional.
         Super runs all the parent class necessities. You do NOT have
