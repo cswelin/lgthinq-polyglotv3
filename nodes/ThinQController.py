@@ -16,6 +16,8 @@ from thinq2.client.objectstore import ObjectStoreClient
 from thinq2.model.device.dishwasher import DishWasherDevice
 from thinq2.model.device.laundry import LaundryDevice
 from nodes import LaundryNode
+from nodes import DishWasherNode
+
 """
 Some shortcuts for udi interface components
 
