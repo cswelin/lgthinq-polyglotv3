@@ -69,7 +69,8 @@ if __name__ == "__main__":
         """
         Catch SIGTERM or Control-C and exit cleanly.
         """
-        polyglot.stop()
+        if polyglot != None:
+          polyglot.stop()
     except Exception as err:
         LOGGER.error('Excption: {0}'.format(err), exc_info=True)
     sys.exit(0)
