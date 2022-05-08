@@ -17,8 +17,8 @@ CDM-30 = Warning
 CDM-40 = Error
 CDM-50 = Critical
 
-# mynodetype
-ND-laundryid-NAME = Laundy Device
-ST-laundrynode-ST-NAME = Status
-CMD-laundrynode-PING-NAME = Ping
-ST-laundrynode-GV0-NAME = Time Remaining
+# laundryid
+ND-laundryid-NAME = Laundry Device
+ST-laundryid-ST-NAME = Status
+CMD-laundryid-PING-NAME = Ping
+ST-laundryid-GV0-NAME = Time Remaining
