@@ -357,7 +357,7 @@ class ThinQController(udi_interface.Node):
             node   = self.poly.getNode(address)
             if node is None:
                 if isinstance(device.snapshot, LaundryDevice):
-                    anode = self.poly.addNode(LaundryNode(self.poly, self.address, address, 'LG - {}'.format(device.alias), device.snapshot, self.thinq))
+                    anode = self.poly.addNode(LaundryNode(self.poly, self.address, address, 'LG - {}'.format(device.alias), device, self.thinq))
                     LOGGER.debug(f'got {anode}')
 
         return True

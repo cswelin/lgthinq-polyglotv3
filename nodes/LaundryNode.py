@@ -42,6 +42,8 @@ class LaundryNode(udi_interface.Node):
         :param name: This nodes name
         """    
 
+        self.device = device
+        self.laundryDevice = device.snapshot
         self.name = name
         self.thinQ = thinQ
         self.laundryDevice = laundryDevice
