@@ -91,14 +91,14 @@ class LaundryNode(udi_interface.Node):
         else:
             self._shortPoll()
 
-    def _shortPoll():
+    def _shortPoll(self):
         LOGGER.debug('shortpoll (node)')
     
     def _longPoll(self):
         LOGGER.debug('longPoll (node)')
         
         try:
-            device = self.thinqQ.get_device(self.laundryDevice.device_id)
+            device = self.thinQ.get_device(self.laundryDevice.device_id)
             self.device = device
             self._reportDriver()
 
