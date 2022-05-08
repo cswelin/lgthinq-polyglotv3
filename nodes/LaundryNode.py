@@ -46,7 +46,6 @@ class LaundryNode(udi_interface.Node):
         self.laundryDevice = device.snapshot
         self.name = name
         self.thinQ = thinQ
-        self.laundryDevice = laundryDevice
         self.poly = polyglot
         self.lpfx = '%s:%s' % (self.id, address)
 
