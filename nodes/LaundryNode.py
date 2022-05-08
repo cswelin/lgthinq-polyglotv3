@@ -1,5 +1,6 @@
 
 from thinq2.model.device.laundry import LaundryDevice
+from thinq2.controller.thinq import ThinQ
 import udi_interface
 import sys
 import time
@@ -29,7 +30,7 @@ class LaundryNode(udi_interface.Node):
     query(): Called when ISY sends a query request to Polyglot for this
         specific node
     """
-    def __init__(self, polyglot, primary, address, name, laundryDevice):
+    def __init__(self, polyglot, primary, address, name, laundryDevice, thinQ):
         """
         Optional.
         Super runs all the parent class necessities. You do NOT have
@@ -42,6 +43,7 @@ class LaundryNode(udi_interface.Node):
         """    
 
         self.name = name
+        self.thinQ = thinQ
         self.laundryDevice = laundryDevice
         self.poly = polyglot
         self.lpfx = '%s:%s' % (self.id, address)
@@ -58,18 +60,26 @@ class LaundryNode(udi_interface.Node):
         START event subscription above
         """
 
-        self.setDriver('GV0', self.laundryDevice.state["remainTimeMinute"])
-        LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
-        self.setDriver('ST', 1)
-        LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
-        self.setDriver('ST', 0)
-        LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
-        self.setDriver('ST', 1)
-        LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
-        self.setDriver('ST', 0)
-        LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
+        self._reportDriver()
         self.http = urllib3.PoolManager()
 
+    def _reportDriver(self):
+        LOGGER.debug('%s: get GV0=%s',self.lpfx,self.getDriver('GV0'))
+        self.setDriver('GV0', self.laundryDevice.state["remainTimeMinute"])
+        LOGGER.debug('%s: get GV0=%s',self.lpfx,self.getDriver('GV0'))
+        
+        LOGGER.debug('%s: get GV1=%s',self.lpfx,self.getDriver('GV1'))
+        self.setDriver('GV1', self.laundryDevice.state["remoteStart"] == "REMOTE_START_ON")
+        LOGGER.debug('%s: get GV1=%s',self.lpfx,self.getDriver('GV1'))
+
+        LOGGER.debug('%s: get GV2=%s',self.lpfx,self.getDriver('GV2'))
+        self.setDriver('GV2', self.laundryDevice.state["state"] == "POWERON" )
+        LOGGER.debug('%s: get GV2=%s',self.lpfx,self.getDriver('GV2'))
+        
+        LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
+        self.setDriver('ST', 1)
+        LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
+        
     def poll(self, polltype):
         """
         This method is called at the poll intervals per the POLL event
@@ -77,15 +87,23 @@ class LaundryNode(udi_interface.Node):
         """
 
         if 'longPoll' in polltype:
-            LOGGER.debug('longPoll (node)')
+            self._longPoll()
         else:
-            LOGGER.debug('shortPoll (node)')
-            if int(self.getDriver('ST')) == 1:
-                self.setDriver('ST',0)
-            else:
-                self.setDriver('ST',1)
+            self._shortPoll()
 
-            LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
+    def _shortPoll():
+        LOGGER.debug('shortpoll (node)')
+    
+    def _longPoll(self):
+        LOGGER.debug('longPoll (node)')
+        
+        try:
+            device = self.thinqQ.get_device(self.laundryDevice.device_id)
+            self.device = device
+            self._reportDriver()
+
+        except Exception as e:
+            LOGGER.error('longPoll error %s', e)
 
     def cmd_on(self, command):
         """
@@ -130,7 +148,9 @@ class LaundryNode(udi_interface.Node):
     """
     drivers = [
         {'driver': 'ST', 'value': 0, 'uom': 2},
-        {'driver': 'GV0', 'value': 0, 'uom': 44}
+        {'driver': 'GV0', 'value': 0, 'uom': 44} # Time Remaining 
+        {'driver': 'GV1', 'value': 0, 'uom': 2}  # Remote Start
+        {'driver': 'GV2', 'value': 0, 'uom': 2}, # Power state
     ]
 
     """
@@ -144,7 +164,5 @@ class LaundryNode(udi_interface.Node):
     this tells it which method to call. DON calls setOn, etc.
     """
     commands = {
-                    'DON': cmd_on,
-                    'DOF': cmd_off,
                     'PING': cmd_ping
                 }

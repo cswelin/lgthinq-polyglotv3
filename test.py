@@ -57,6 +57,11 @@ for device in devices.items:
     print("{}: {} (model {})".format(device.device_id, device.alias, device.model_name))
     pprint(device.snapshot)
     print(device.snapshot.state["remainTimeMinute"])
+
+    print("Manual fetch\n")
+    test = thinq.get_device(device.device_id)
+    pprint(test)
+    pprint(test.snapshot)
     #print("{}: {}".format(device.polymorph.door, device.polymorph.remainTimeHour))
 
 #################################################################################

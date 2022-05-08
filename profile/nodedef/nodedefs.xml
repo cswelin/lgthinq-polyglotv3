@@ -5,7 +5,7 @@
         <editors />
         <sts>
 		<st id="ST" editor="bool" />
-	</sts>
+	    </sts>
         <cmds>
             <sends>
               <!-- These are for our heartbeat -->
@@ -26,12 +26,12 @@
         <sts>
             <st id="ST" editor="bool" />
             <st id="GV0" editor="I_TIME_REMAINING" />
+            <st id="GV1" editor="bool" />
+            <st id="GV2" editor="POWER" />
         </sts>
         <cmds>
             <sends />
             <accepts>
-                <cmd id="DON" />
-                <cmd id="DOF" />
                 <cmd id="PING" />
             </accepts>
         </cmds>
