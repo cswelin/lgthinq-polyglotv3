@@ -1,5 +1,5 @@
 
-from thinq2.model.device.laundry import LaundryDevice
+from thinq2.model.device.dishwasher import DishWasherDevice
 from thinq2.controller.thinq import ThinQ
 import udi_interface
 import sys
@@ -66,19 +66,19 @@ class DishWasherNode(udi_interface.Node):
 
     def _reportDriver(self):
         LOGGER.debug('%s: get GV0=%s',self.lpfx,self.getDriver('GV0'))
-        self.setDriver('GV0', self.laundryDevice.state["remainTimeMinute"])
+        self.setDriver('GV0', self.snapshot.state["remainTimeMinute"])
         LOGGER.debug('%s: get GV0=%s',self.lpfx,self.getDriver('GV0'))
         
         LOGGER.debug('%s: get GV1=%s',self.lpfx,self.getDriver('GV1'))
-        self.setDriver('GV1', self.laundryDevice.state["remoteStart"] == "REMOTE_START_ON")
+        self.setDriver('GV1', self.snapshot.state["remoteStart"] == "REMOTE_START_ON")
         LOGGER.debug('%s: get GV1=%s',self.lpfx,self.getDriver('GV1'))
 
         LOGGER.debug('%s: get GV2=%s',self.lpfx,self.getDriver('GV2'))
-        self.setDriver('GV2', self.laundryDevice.state["state"] == "POWERON" )
+        self.setDriver('GV2', self.snapshot.state["state"] == "POWERON" )
         LOGGER.debug('%s: get GV2=%s',self.lpfx,self.getDriver('GV2'))
 
         LOGGER.debug('%s: get GV3=%s',self.lpfx,self.getDriver('GV3'))
-        self.setDriver('GV3', self.laundryDevice.state["door"] != "CLOSE" )
+        self.setDriver('GV3', self.snapshot.state["door"] != "CLOSE" )
         LOGGER.debug('%s: get GV3=%s',self.lpfx,self.getDriver('GV3'))
         
         LOGGER.debug('%s: get ST=%s',self.lpfx,self.getDriver('ST'))
