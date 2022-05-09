@@ -27,6 +27,13 @@ ST-laundrynode-GV0-NAME = Time Remaining
 ST-laundrynode-GV1-NAME = Remote Start
 ST-laundrynode-GV2-NAME = Power State
 
+ST-dishwashernode-ST-NAME = Status
+ST-dishwashernode-GV0-NAME = Time Remaining
+ST-dishwashernode-GV1-NAME = Remote Start
+ST-dishwashernode-GV2-NAME = Power State
+ST-dishwashernode-GV3-NAME = Door State
+
+
 POWER-0 = Powered Off
 POWER-1 = Powered On
 
