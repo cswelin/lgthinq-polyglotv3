@@ -399,7 +399,7 @@ class ThinQController(udi_interface.Node):
         name = bytes(deviceID, 'utf-8').decode('utf-8','ignore')
         # Remove <>`~!@#$%^&*(){}[]?/\;:"'` characters from name
         # make it lower case, and only 14 characters
-        return re.sub(r"[<>`~!@#$%^&*(){}[\]?/\\;:\"']+", "", name.lower()[:14])
+        return re.sub(r"[<>`~!@#$%^&*(){}[\]?/\\;:\"']+", "", name.lower()[:9])
 
     # Removes invalid charaters for ISY Node description
     def get_valid_node_name(self, name):
