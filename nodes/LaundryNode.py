@@ -151,7 +151,7 @@ class LaundryNode(udi_interface.Node):
         {'driver': 'ST', 'value': 0, 'uom': 2},
         {'driver': 'GV0', 'value': 0, 'uom': 44}, # Time Remaining 
         {'driver': 'GV1', 'value': 0, 'uom': 2},  # Remote Start
-        {'driver': 'GV2', 'value': 0, 'uom': 2} # Power state
+        {'driver': 'GV2', 'value': 0, 'uom': 2}   # Power state
     ]
 
     """
