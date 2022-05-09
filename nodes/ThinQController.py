@@ -397,9 +397,9 @@ class ThinQController(udi_interface.Node):
         # Only allow utf-8 characters
         #  https://stackoverflow.com/questions/26541968/delete-every-non-utf-8-symbols-froms-string
         name = bytes(deviceID, 'utf-8').decode('utf-8','ignore')
-        # Remove <>`~!@#$%^&*(){}[]?/\;:"'` characters from name
+        # Remove <>`~!@#$%^&*(){}[]?/\;:"'-` characters from name
         # make it lower case, and only 14 characters
-        return re.sub(r"[<>-`~!@#$%^&*(){}[\]?/\\;:\"']+", "", name.lower()[:14])
+        return re.sub(r"[<>`~!@#$%^&*(){}[\]?/\\;:\"'-]+", "", name.lower()[:13])
 
     # Removes invalid charaters for ISY Node description
     def get_valid_node_name(self, name):
