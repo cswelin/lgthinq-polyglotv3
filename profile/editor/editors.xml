@@ -10,10 +10,10 @@
       <range uom="25" subset="9,10,20,30,40,50" nls="CDM"/>
     </editor>
     <editor id="POWER">
-      <range uom="25" subset="0,1" nls="POWER" />
+      <range uom="2" subset="0,1" nls="POWER" />
     </editor>
     <editor id="DOOR">
-      <range uom="25" subset="0,1" nls="DOOR" />
+      <range uom="2" subset="0,1" nls="DOOR" />
     </editor>
 
 </editors>
