@@ -65,6 +65,8 @@ class DishWasherNode(udi_interface.Node):
         self.http = urllib3.PoolManager()
 
     def _reportDriver(self):
+        LOGGER.debug('%s: object=%s', json.dump(self.snapshot.state))
+
         LOGGER.debug('%s: get GV0=%s',self.lpfx,self.getDriver('GV0'))
         self.setDriver('GV0', self.snapshot.state["remainTimeMinute"])
         LOGGER.debug('%s: get GV0=%s',self.lpfx,self.getDriver('GV0'))
