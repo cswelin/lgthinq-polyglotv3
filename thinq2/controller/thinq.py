@@ -9,7 +9,6 @@ from thinq2.controller.device import ThinQDevice
 from thinq2.model.config import ThinQConfiguration
 from thinq2.model.mqtt import MQTTMessage
 
-
 @controller(ThinQConfiguration)
 class ThinQ:
 
@@ -23,7 +22,8 @@ class ThinQ:
     # XXX - temporary?
     def start(self):
         self.mqtt.on_device_message = self._notify_device
-        self.mqtt.loop_forever()
+        # self.mqtt.loop_forever()
+        self.mqtt.loop_start()
 
     def _notify_device(self, message: MQTTMessage):
         # XXX - ugly temporary PoC

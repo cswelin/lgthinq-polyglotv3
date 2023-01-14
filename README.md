@@ -1,25 +1,33 @@
-# MyNodeServer
+# ThingQ V2
 
-Template to provide an example of how a node server is written for Polyglot
-version 3. The goal is to provide some concrete examples of the required
-implementations and some best known practices for developing node servers.
-
-You will need to be familiar with the udi_interface module API at 
-https://github.com/UniversalDevicesInc/udi_python_interface
-
-More developer information is available at https://developer.isy.io/
+A PolyglotV3 node server plugin for monitoring LG ThinQv2 device vias their ThinQ platform.
 
 #### Installation
 
-This template node server can be installed from the PG3 NodeServer Store.
+This node server can be installed from the PG3 NodeServer Store.
 
-#### Requirements
+## Supported Devices
 
-This template node server will only run on Polyglot version 3. You will
-need to have a Polisy with PG3 installed to run this node server.
+| *Device* | *Support* 
+| --- | --- | 
+| Refrigerator | 🚫 |
+| Air Purifier | 🚫 |
+| Washer & Dryer | ✔️ | 
+| Dishwasher | ✔️ | 
+| Dehumidifier | 🚫 |
+| AC | 🚫 |
 
-## Using this Template
+# Configuration
 
-To use this template as the start of your nodeserver, just hit the + in the
-upper right corner of github select Import Repository and give the path to
-this repo as the source.
+1. Navigate to the "Configuration" tab after installing via PG3 NodeServer store
+2. Add Language and Country codes under typed configuration parameters
+
+   country code: Your account [country alpha-2 code](https://www.countrycode.org), e.g., US for the USA.
+   language code:  Your account language code, e.g., en-US, en-CA, fr-CA, vi-VN.
+
+3. When prompted with a Notice, click the link and login
+4. Once redirected to a blank page, copy the URL (address) and save that as a custom config with they key `auth_key`
+
+eg. `auth_key`: `https://kr.m.lgaccount.com/login/iabClose?state=.....`
+
+4. Save and profit!

@@ -5,7 +5,7 @@
         <editors />
         <sts>
 		<st id="ST" editor="bool" />
-	</sts>
+	    </sts>
         <cmds>
             <sends>
               <!-- These are for our heartbeat -->
@@ -15,24 +15,34 @@
             <accepts>
               <cmd id="QUERY" />
               <cmd id="DISCOVER" />
-              <cmd id="REMOVE_NOTICES_ALL" />
-              <cmd id="REMOVE_NOTICE_TEST" />
             </accepts>
         </cmds>
     </nodeDef>
-	<!-- dishwasherid -->
-    <nodeDef id="dishwasherid" nls="tmplnode">
+	<!-- laundryid -->
+    <nodeDef id="laundryid" nls="laundrynode">
         <editors />
         <sts>
             <st id="ST" editor="bool" />
+            <st id="GV0" editor="I_TIME_REMAINING" />
+            <st id="GV2" editor="DEVICE_STATE" />
         </sts>
         <cmds>
             <sends />
-            <accepts>
-                <cmd id="DON" />
-                <cmd id="DOF" />
-                <cmd id="PING" />
-            </accepts>
+            <accepts />
+        </cmds>
+    </nodeDef>
+    <!-- dishwasherid -->
+    <nodeDef id="dishwasherid" nls="dishwashernode">
+        <editors />
+        <sts>
+            <st id="ST" editor="bool" />
+            <st id="GV0" editor="I_TIME_REMAINING" />
+            <st id="GV2" editor="DEVICE_STATE" />
+            <st id="GV3" editor="DEVICE_DOOR" />
+        </sts>
+        <cmds>
+            <sends />
+            <accepts />
         </cmds>
     </nodeDef>
 </nodeDefs>

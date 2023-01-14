@@ -1,12 +1,11 @@
 
 # controller
-ND-controller-NAME = Template NodeServer Controller
+ND-controller-NAME = LG ThinQ NodeServer Controller
 CMD-ctl-QUERY-NAME = Query
 CMD-ctl-DISCOVER-NAME = Re-Discover
 CMD-ctl-UPDATE_PROFILE-NAME = Update Profile
-CMD-ctl-REMOVE_NOTICES_ALL-NAME = Remove All Notices
-CMD-ctl-REMOVE_NOTICE_TEST-NAME = Remove Notice Test
 CMD-ctl-SET_DM-NAME = Set Logger Level
+
 ST-ctl-ST-NAME = NodeServer Online
 
 # Debug/Logger Modes
@@ -17,7 +16,30 @@ CDM-30 = Warning
 CDM-40 = Error
 CDM-50 = Critical
 
-# mynodetype
-ND-dishwasherid-NAME = Template Node
-ST-tmplnode-ST-NAME = Node Status
-CMD-tmplnode-PING-NAME = Ping
+# laundrynode
+
+ND-laundryid-NAME = Laundry Node
+ST-laundrynode-ST-NAME = Status
+ST-laundrynode-GV0-NAME = Time Remaining
+ST-laundrynode-GV2-NAME = State
+
+# dishwasher node
+ND-dishwasherid-NAME = Dishwasher Node
+ST-dishwashernode-ST-NAME = Status
+ST-dishwashernode-GV0-NAME = Time Remaining
+ST-dishwashernode-GV2-NAME = State
+ST-dishwashernode-GV3-NAME = Door Status
+
+# Properties 
+DOOR-0 = Closed
+DOOR-1 = Opened
+
+STATE-0 = Powered off
+STATE-1 = Running
+STATE-2 = Paused
+STATE-3 = Cooldown
+STATE-4 = Initial 
+STATE-5 = Standby
+STATE-20 = Finished
+STATE-30 = Error
+
