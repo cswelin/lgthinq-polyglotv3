@@ -4,32 +4,28 @@
 	"type": "python3",
 	"executable": "thingq-poly.py",
 	"install": "install.sh",
-	"description": "Template Node Server",
+	"description": "LG ThinQ1 V2 Node Server",
 	"notice": "Your disclaimer here",
-	"shortPoll": "120",
-	"longPoll": "240",
+	"shortPoll": "60",
+	"longPoll": "120",
 	"testMode": false,
 	"logLevel": "DEBUG",
 	"profile_version": "3.0.0",
 	"customParams": {
-		"user": "",
-		"password": "my secret password",
-		"type": "TheType",
-        "host": "host_or_IP",
-        "port": "port_number"
+		"auth_url": ""
 	},
 	"credits": [
 		{
-			"title": "mypoly: a NodeServer for Template Integration",
-			"author": "James Milne (Einstein.42)",
+			"title": "LG ThinQ1 V2 Node Server Integration",
+			"author": "Colin Swelin (cswelin)",
 			"version": "3.0.0",
-			"date": "January 14, 2021",
-			"source": "https://github.com/UniversalDevicesInc/udi-poly-template-python",
-			"license": "https://github.com/UniversalDevicesInc/udi-poly-template-python/LICENSE"
+			"date": "January 5, 2023",
+			"source": "https://github.com/cswelin/lgthinq-polyglotv3",
+			"license": "https://github.com/cswelin/lgthinq-polyglotv3/LICENSE"
 		}
 	],
 	"store": {
-		"developer": "milne.james@gmail.com",
+		"developer": "colinswelin@gmail.com",
 		"purchaseOptions": [
 			{
 				"isPerpetual": true,

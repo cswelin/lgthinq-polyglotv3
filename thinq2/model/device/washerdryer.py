@@ -7,5 +7,5 @@ from .base import Device
 
 
 @dataclass(base_schema=CamelCaseSchema)
-class LaundryDevice(Device):
+class WasherDryerDevice(Device):
     state: dict = field(metadata=dict(data_key="washerDryer"))

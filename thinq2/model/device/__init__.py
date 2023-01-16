@@ -1,9 +1,9 @@
 from .base import Device
-from .laundry import LaundryDevice
+from .washerdryer import WasherDryerDevice
 from .dishwasher import DishWasherDevice
 
 device_types = {
-    201: LaundryDevice,
-    202: LaundryDevice,
+    201: WasherDryerDevice,
+    202: WasherDryerDevice,
     204: DishWasherDevice
 }

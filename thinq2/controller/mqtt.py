@@ -15,7 +15,6 @@ from thinq2.util.filesystem import TempDir
 
 from thinq2 import AWS_IOTT_CA_CERT_URL, AWS_IOTT_ALPN_PROTOCOL
 
-
 @controller(MQTTConfiguration)
 class ThinQMQTT:
     def __init__(self, auth):
@@ -38,8 +37,16 @@ class ThinQMQTT:
         self._on_message(client, userdata, msg)
 
     def on_connect(self, client, userdata, flags, rc):
+        self.logger.debug('thinq.mqtt on_connect')
         for topic in self.registration.subscriptions:
             client.subscribe(topic, 1)
+
+    def on_disconnect(self, client, userdata, rc, properties=None):
+        if rc != 0:
+            self.logger.debug(
+                "thinq.mqtt Unexpected disconnection. Trying reconnect. rc: {}".format(rc))
+        else:
+            self.logger.debug("thinq.mqtt Graceful disconnection.")
 
     def on_device_message(self, message):
         pass
@@ -49,9 +56,17 @@ class ThinQMQTT:
         message = None
         try:
             message = MQTTMessage.Schema().loads(msg.payload)
+            self.logger.debug('thinq.mqtt message=%s', msg.payload)
         except Exception as e:
-            print("Can't parse MQTT message:", e)
+            self.logger.debug('thinq.mqtt Can\'t parse MQTT message: ', e)
         self.on_device_message(message)
+
+    def on_subscribe(self, client, userdata, mid, granted_qos, properties=None):
+        self.logger.debug(
+            "thinq.mqtt Subscribed Succesfully for Message ID: {} - QoS: {}".format(str(mid), str(granted_qos)))
+
+    def on_log(self, client, userdata, level, buf):
+        self.logger.debug('thinq.mqtt log %s: ', buf)
 
     @property
     @memoize
@@ -60,6 +75,9 @@ class ThinQMQTT:
         client.tls_set_context(self.ssl_context)
         client.on_connect = self.on_connect
         client.on_message = self.on_message
+        client.on_disconnect = self.on_disconnect
+        client.on_subscribe = self.on_subscribe
+        client.on_log = self.on_log
         return client
 
     @property
@@ -79,7 +97,8 @@ class ThinQMQTT:
         private_key_path = temp_dir.file(self.private_key)
         client_cert_path = temp_dir.file(self.registration.certificate_pem)
 
-        context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
+        # context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
         context.set_alpn_protocols([AWS_IOTT_ALPN_PROTOCOL])
         context.load_verify_locations(cafile=ca_cert_path)
         context.load_cert_chain(certfile=client_cert_path, keyfile=private_key_path)
@@ -109,7 +128,10 @@ class ThinQMQTT:
     @initializer
     def registration(self):
         if self.thinq_client.get_registered() is False:
+            self.logger.debug('thinq.mqtt register')
             self.thinq_client.register()
+        else:
+            self.logger.debug('thinq.mqtt already registered')
         return self.thinq_client.register_iot(csr=self.csr)
 
     @initializer

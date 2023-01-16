@@ -1,9 +1,19 @@
 <editors>
     <!-- Boolean -->
     <editor id="bool">
-        <range uom="2" subset="0,1" />
+      <range uom="2" subset="0,1" />
+    </editor>
+    <editor id="I_TIME_REMAINING">
+      <range uom="44" min="0" max="5000000000" prec="2" />
     </editor>
     <editor id="I_DEBUG">
       <range uom="25" subset="9,10,20,30,40,50" nls="CDM"/>
     </editor>
+    <editor id="DEVICE_STATE">
+      <range uom="25" subset="0,1,2,3,4,5,20,30" nls="STATE" />
+    </editor>
+    <editor id="DEVICE_DOOR">
+      <range uom="25" subset="0,1" nls="DOOR" />
+    </editor>
+
 </editors>
