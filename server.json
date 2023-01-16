@@ -1,36 +1,35 @@
 {
-	"name": "PythonTemplate",
-	"docs": "https://github.com/UniversalDevicesInc/udi-poly-template-python",
-	"type": "python3",
-	"executable": "thingq-poly.py",
-	"install": "install.sh",
-	"description": "LG ThinQ1 V2 Node Server",
-	"notice": "Your disclaimer here",
-	"shortPoll": "60",
-	"longPoll": "120",
-	"testMode": false,
-	"logLevel": "DEBUG",
-	"profile_version": "3.0.0",
-	"customParams": {
-		"auth_url": ""
-	},
-	"credits": [
-		{
-			"title": "LG ThinQ1 V2 Node Server Integration",
-			"author": "Colin Swelin (cswelin)",
-			"version": "3.0.0",
-			"date": "January 5, 2023",
-			"source": "https://github.com/cswelin/lgthinq-polyglotv3",
-			"license": "https://github.com/cswelin/lgthinq-polyglotv3/LICENSE"
-		}
-	],
-	"store": {
-		"developer": "colinswelin@gmail.com",
-		"purchaseOptions": [
-			{
-				"isPerpetual": true,
-				"price": 0
-			}
-		]
-	}
+    "name": "LGThinQV2",
+    "desc": "LG ThinQ1 V2 Node Server Integration",
+    "version": "3.0.0",
+    "docs": "https://github.com/cswelin/lgthinq-polyglotv3/blob/main/README.md",
+    "author": "Colin Swelin",
+    "url": "https://github.com/cswelin/lgthinq-polyglotv3/",
+    "language": "python3",
+    "developer": "colin@swelin.com",
+    "status": "active",
+    "branch": "main",
+    "nsdata": "",
+    "oauth": "",
+    "customParams": "",
+    "executable": "thingq-poly.py",
+    "profile_version": "3.0.0",
+    "install": "install.sh",
+    "shortPoll": 60,
+    "longPoll": 300,
+    "nsInfoPoll": 0,
+    "logLevel": "CRITICAL",
+    "readme": "",
+    "changelog": "Initial release support Washer / Dryers and Dishwashers",
+    "uuid": "2fe450d2-aa1a-4cfc-9178-6816e9a71802",
+    "discover": 0,
+    "authorize": 0,
+    "from_store": "Local",
+    "persist_folder": "state",
+    "purchaseOptions": [
+        {
+            "isPerpetual": true,
+            "price": "0"
+        }
+    ]
 }
