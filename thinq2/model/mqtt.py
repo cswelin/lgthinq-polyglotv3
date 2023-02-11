@@ -11,7 +11,7 @@ from thinq2.schema import CamelCaseSchema
 @dataclass
 class MQTTConfiguration:
     route: Route
-    registration: IOTRegistration
+    #registration: IOTRegistration
     ca_cert: str
     private_key: str
     csr: str
